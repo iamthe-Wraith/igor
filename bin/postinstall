@@ -1,0 +1,79 @@
+#!/usr/bin/env node
+
+const os = require('os');
+const fs = require('fs');
+const path = require('path');
+const prompts = require('prompts');
+
+const legacyPath = path.join(os.homedir(), '.bbrc');
+const configPath = path.join(os.homedir(), '.igorrc');
+
+(async () => {
+  let config = {};
+
+  if (fs.existsSync(legacyPath)) {
+    try {
+      const parsedConfig = JSON.parse(fs.readFileSync(legacyPath, 'utf8'));
+      if (typeof parsedConfig === 'object') {
+        config = parsedConfig;
+      }
+    } catch (err) { /* swallow ParserErrors */ }
+  } else if (fs.existsSync(configPath)) {
+    try {
+      const parsedConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      if (typeof parsedConfig === 'object') {
+        config = parsedConfig;
+      }
+    } catch (err) { /* swallow ParserErrors */ }
+  }
+
+  if (!config.github) config.github = {};
+
+  // prompt for missing github attributes required to run
+  const missingAttributePrompts = Object.entries({
+    username: 'Enter your github username',
+    token: 'Enter your github token (see docs)'
+  })
+    .filter(([attr]) => typeof config.github[attr] !== 'string');
+
+  for (const [attr, message] of missingAttributePrompts) {
+    const { value } = await prompts({
+      message,
+      name: 'value',
+      type: 'text',
+      validate: val => val.length || `invalid ${attr}`
+    });
+
+    config.github[attr] = value;
+  }
+
+  if (!config.colors) {
+    config.colors = {
+      title: 'cyan',
+      gen: 'white',
+      success: 'green',
+      warn: 'yellow',
+      error: 'red',
+      debug: 'gray',
+      complete: 'rainbow'
+    };
+  }
+
+  if (typeof config.maxReposToShow !== 'number') {
+    config.maxReposToShow = 10;
+  }
+
+  try {
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+    if (fs.existsSync(legacyPath)) {
+      fs.unlinkSync(legacyPath);
+    }
+
+    console.log('all set!');
+  } catch (err) {
+    console.error(err);
+  }
+
+  process.exitCode = 0;
+})();
