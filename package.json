@@ -1,0 +1,46 @@
+{
+  "name": "igor",
+  "version": "3.4.0",
+  "description": "Like the assistant to the famous mad scientist, Dr. Frankenstein, Igor helps to set up and manage everything for internal experiments.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamthe-Wraith/igor.git"
+  },
+  "author": "iamthe-Wraith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iamthe-Wraith/igor/issues"
+  },
+  "homepage": "https://github.com/iamthe-Wraith/igor#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/node": "^7.10.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.1",
+    "@babel/polyfill": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "babel-minify-webpack-plugin": "^0.3.1",
+    "eslint": "^7.2.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.21.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "colors": "^1.4.0",
+    "parse-link-header": "^1.0.1",
+    "prompts": "^2.3.2"
+  }
+}
