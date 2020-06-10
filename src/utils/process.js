@@ -149,6 +149,15 @@ const testIfUserHasLatestVersion = ctx => {
           latestVersion: `v${latestVersion.join('.')}`
         };
       }
+    })
+    .catch(err => {
+      if (err.message === 'Not Found') {
+        Logger.warn('\n[!] no versions found\n');
+
+        process.exit(1);
+      } else {
+        throw err;
+      }
     });
 };
 
