@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 import Github from '../../lib/github-api';
 import { Logger } from '../../lib/logger';
 
@@ -111,32 +114,41 @@ const testIfUserHasLatestVersion = ctx => {
   return github.getLatestRelease({ repoName: 'igor' })
     .then(release => {
       const latestVersion = release.tag_name.replace('v', '').split('.');
-      const localVersion = require('home/package.json').version.replace('v', '').split('.');
-      let isBehind = false;
+      let localVersion = null;
 
-      if (localVersion[0] < latestVersion[0]) {
-        isBehind = true;
-      } else if (localVersion[1] < latestVersion[1] && localVersion[0] <= latestVersion[0]) {
-        isBehind = true;
-      } else if (localVersion[2] < latestVersion[2]) {
-        if ((localVersion[1] === latestVersion[1] && localVersion[0] === latestVersion[0]) || localVersion[1] < latestVersion[1] || localVersion[0] < latestVersion[0]) {
+      try {
+        localVersion = JSON.parse(fs.readFileSync(path.join('..', '..', 'package.json'), 'utf8')).version.replace('v', '').split('.');
+      } catch (err) {
+        throw new Error('failed to get latest version of igor');
+      }
+
+      if (localVersion) {
+        let isBehind = false;
+
+        if (localVersion[0] < latestVersion[0]) {
           isBehind = true;
+        } else if (localVersion[1] < latestVersion[1] && localVersion[0] <= latestVersion[0]) {
+          isBehind = true;
+        } else if (localVersion[2] < latestVersion[2]) {
+          if ((localVersion[1] === latestVersion[1] && localVersion[0] === latestVersion[0]) || localVersion[1] < latestVersion[1] || localVersion[0] < latestVersion[0]) {
+            isBehind = true;
+          }
         }
-      }
 
-      if (isBehind) {
-        localStatus = -1;
-      } else if (localVersion[2] === latestVersion[2] && localVersion[1] === latestVersion[1] && localVersion[0] === latestVersion[0]) {
-        localStatus = 0;
-      } else {
-        localStatus = 1;
-      }
+        if (isBehind) {
+          localStatus = -1;
+        } else if (localVersion[2] === latestVersion[2] && localVersion[1] === latestVersion[1] && localVersion[0] === latestVersion[0]) {
+          localStatus = 0;
+        } else {
+          localStatus = 1;
+        }
 
-      return {
-        status: localStatus,
-        localVersion: `v${localVersion.join('.')}`,
-        latestVersion: `v${latestVersion.join('.')}`
-      };
+        return {
+          status: localStatus,
+          localVersion: `v${localVersion.join('.')}`,
+          latestVersion: `v${latestVersion.join('.')}`
+        };
+      }
     });
 };
 

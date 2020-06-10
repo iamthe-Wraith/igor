@@ -1,10 +1,10 @@
 {
   "name": "igor",
-  "version": "3.4.0",
+  "version": "1.0.0",
   "description": "Like the assistant to the famous mad scientist, Dr. Frankenstein, Igor helps to set up and manage everything for internal experiments.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js -w",
     "postinstall": "node bin/postinstall"
   },
   "repository": {

@@ -1,4 +1,4 @@
-### v3.4.0
+### v1.0.0
 - rebranded from `Build Tool` to `Igor`
 - removed user only teams retrieval. now all calls to get teams will retrieve all teams associated with org
 - removed anti-pattern project wide
@@ -14,6 +14,10 @@
 - updated BrooksBellInc dependency listings
 - updated installation instructions
 - postinstall bug fix
+
+-----
+
+# legacy Build Tool
 
 ### v3.3.0  
 - adds necessary non-client teams to all new repos
