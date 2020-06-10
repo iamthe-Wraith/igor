@@ -1,0 +1,194 @@
+[
+  {
+    "name": "Client Feedback",
+    "color": "D4AF37"
+  },
+  {
+    "name": "Dev Task",
+    "color": "333333"
+  },
+  {
+    "name": "LOE - Low",
+    "color": "f9a4a7"
+  },
+  {
+    "name": "LOE - Med",
+    "color": "f9a4a7"
+  },
+  {
+    "name": "LOE - High",
+    "color": "f9a4a7"
+  },
+  {
+    "name": "Tech - React",
+    "color": "1c0c6d"
+  },
+  {
+    "name": "Tech - AngularJS",
+    "color": "1c0c6d"
+  },
+  {
+    "name": "Tech - Angular",
+    "color": "1c0c6d"
+  },
+  {
+    "name": "Tech - .NET",
+    "color": "1c0c6d"
+  },
+  {
+    "name": "Client Knowledge Required",
+    "color": "ff38eb"
+  },
+  {
+    "name": "Dev Complete",
+    "color": "abe23d"
+  },
+  {
+    "name": "Browser - Firefox",
+    "color": "7057ff"
+  },
+  {
+    "name": "Browser - IE",
+    "color": "7057ff"
+  },
+  {
+    "name": "Browser - Chrome",
+    "color": "7057ff"
+  },
+  {
+    "name": "Browser - Safari",
+    "color": "7057ff"
+  },
+  {
+    "name": "Browser - Edge",
+    "color": "7057ff"
+  },
+  {
+    "name": "Browser - All",
+    "color": "7057ff"
+  },
+  {
+    "name": "Device - Mobile",
+    "color": "c384ed"
+  },
+  {
+    "name": "Device - Tablet",
+    "color": "c384ed"
+  },
+  {
+    "name": "Device - Desktop",
+    "color": "c384ed"
+  },
+  {
+    "name": "Device - All",
+    "color": "c384ed"
+  },
+  {
+    "name": "Control",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation A",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation B",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation C",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation D",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation E",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation F",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation G",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation H",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation I",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation J",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation K",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation L",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation M",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation N",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation O",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation P",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation Q",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation R",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation S",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation T",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation U",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation V",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation W",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation X",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation Y",
+    "color": "a2eeef"
+  },
+  {
+    "name": "Variation Z",
+    "color": "a2eeef"
+  }
+]

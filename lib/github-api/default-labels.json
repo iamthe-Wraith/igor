@@ -1,0 +1,11 @@
+[
+  { "name": "bug" },
+  { "name": "duplicate" },
+  { "name": "documentation" },
+  { "name": "enhancement" },
+  { "name": "good first issue" },
+  { "name": "help wanted" },
+  { "name": "invalid" },
+  { "name": "question" },
+  { "name": "wontfix" }
+]
