@@ -4,7 +4,8 @@
   "description": "Like the assistant to the famous mad scientist, Dr. Frankenstein, Igor helps to set up and manage everything for internal experiments.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config config/webpack.config.js",
+    "postinstall": "node bin/postinstall"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,9 @@
     "url": "https://github.com/iamthe-Wraith/igor/issues"
   },
   "homepage": "https://github.com/iamthe-Wraith/igor#readme",
+  "bin": {
+    "igor": "bin/igor"
+  },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
