@@ -4,6 +4,7 @@ import fs from 'fs';
 import Command from './Command';
 import { Logger } from '../../lib/logger';
 import FatalError from '../../lib/error/fatal-error';
+import { parseTemplateVariables } from '../utils/template-variables';
 
 const testRepoNamePattern = /_\d{4}-\d{2}-\d{2}/;
 const testModuleTemplatesDir = path.join('modules', '__templates');
@@ -85,35 +86,6 @@ const createModuleSCSS = ctx => {
   } else {
     Logger.gen('no .scss template file found');
     return false;
-  }
-};
-
-/**
- * replaces any template variables found
- * in the template with the value for that
- * variable.
- *
- * @param {string} template - the unparsed
- * template string (read from the template
- * file)
- *
- * @param {Object} ctx - the context
- *
- * @return {string} - the parsed template
- * string.
- */
-const parseTemplateVariables = (template, ctx) => {
-  try {
-    const entryMethodName = ctx.arguments.arguments.entryMethodName || 'init';
-
-    template = template.split('{{moduleEntryMethodName}}').join(entryMethodName);
-    template = template.split('{{moduleName}}').join(ctx.arguments.parameters.name);
-    // add new template varaibles here...
-
-    return template;
-  } catch (err) {
-    err.message = `createmodule:parseTemplateVariables error - ${err.message}`;
-    throw err;
   }
 };
 
@@ -200,15 +172,6 @@ const createModuleCommand = new Command({
           |- moduleName.template.js
           |- moduleName.template.scss
 
-
-  ----------------------
-    TEMPLATE VARIABLES:
-  ----------------------
-  a list of template variables that can be used in your templates that will be updated when the module is created.
-
-  {{moduleEntryMethodName}} - will be replaced with the name of the main entry method for the module. (defaults to 'init' if argument not provided).
-
-  {{moduleName}} - will be replaced with the name of the module.
 
 
 
