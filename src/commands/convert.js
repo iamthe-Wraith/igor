@@ -8,6 +8,7 @@ import Github from '../../lib/github-api';
 import FatalError from '../../lib/error/fatal-error';
 import * as Team from '../utils/team';
 import { Logger } from '../../lib/logger';
+import { getFormattedDate } from '../utils/date';
 
 const org = 'BrooksBellInc';
 const maxBuffer = 1200 * 1024;
@@ -503,19 +504,6 @@ const updateVariationFiles = ctx => {
   Logger.gen('updating test files...');
   readDirectory(ctx, process.cwd());
   return ctx;
-};
-
-/**
- * generates date in format: YYYY-MM-DD
- *
- * @return {string} - the formatted date
- */
-const getFormattedDate = () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = (now.getMonth() + 1) < 10 ? `0${now.getMonth() + 1}` : now.getMonth();
-  const date = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
-  return `${year}-${month}-${date}`;
 };
 
 /**

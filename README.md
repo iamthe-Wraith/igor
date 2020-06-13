@@ -2,20 +2,19 @@
 
 Like the assistant to the famous mad scientist, Dr. Frankenstein, Igor helps to set up and manage everything for internal experiments.
 
-[dependency versions](#dependencyversions)  
+[dependency versions](#recommended-dependency-versions)  
 [installation](#installation)  
-[getting your access token](#gettingyouraccesstoken)  
+[getting your access token](#getting-your-access-token)  
 [commands](#commands)  
+[template variables](#template-variables)  
 [customization](#customization)  
-[version notes](#versionnotes)  
-[future features](#futurefeatures)  
 
-<h3 id="dependencyversions">RECOMMENDED DEPENDENCY VERSIONS</h3>
+### RECOMMENDED DEPENDENCY VERSIONS
 
 - Node ----- < v11.7.0
 - NPM ------ < v6.5.0
 
-<h3 id="installation">INSTALLATION</h3>
+### INSTALLATION
 
 Steps:
 1. traverse to directory you would like to store the Igor repo.  
@@ -29,7 +28,7 @@ Steps:
 
 that's it! Igor should now be ready to do your bidding.
 
-<h3 id="gettingyouraccesstoken">GETTING YOUR ACCESS TOKEN</h3>
+### GETTING YOUR ACCESS TOKEN
 
 Since Igor uses the GitHub API, you are going to need to provide an access token that it will store for later use. If you are unfamiliar with how to generate an access token, you can follow [these instruction](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
 
@@ -41,21 +40,39 @@ Once you have copied the token, you will need to do one of two things:
 
 2. You may need/want to update your token after installation. Simply open the .igorrc file in your home directory and replace the existing token with your new one.
 
-<h3 id="commands">COMMANDS</h3>
+### COMMANDS
 
 For a list of available commands, in your terminal, run the command: `igor help`  
 If you would like to see further documentation for a specific command, you can use the command|c argument. in your terminal, run either of these commands:   
 `igor help -c [name of command]`  
 `igor help --command [name of command]`  
 
-<h3 id="customization">CUSTOMIZATION</h3>
+### TEMPLATE VARIABLES
+a list of template variables that are available for use.
+
+#### Variables Available for Client Templates
+
+- `{{clientName}}` - the name of the client the test is being created for.  
+- `{{dateCreated}}` - the date the test is being created (format: YYYY-MM-DD)  
+- `{{testName}}` - the name of the test being created  
+- `{{username}}` - the username of the user creating the test  
+
+#### Variables Available for Module Templates
+
+- `{{moduleEntryMethodName}}` - the name of the main entry method for the module  
+- `{{moduleName}}` - the name of the new module being created  
+- `{{statefulImport}}` - the import statement for `bbmodules/State`. (when added to a template, will only add the import statement if the stateful flag is included with the command)  
+- `{{statefulInit}}` - the `initState` function. (when added to a template, will only add the `initState` function if the stateful flag is included with the command)  
+- `{{statefulInitCall}}` - the call to the `initState` function. (when added to a template, will only add the `initState` function call if the stateful flag is included with the command)  
+
+### CUSTOMIZATION
 
 You can customize the colors used for all the messages that the Igor prints to the console.
 
 to customize, all that is needed is to update the 'colors' property within the .igorrc file, located in your home directory.
 
 ```json
-  "colors": {
+   "colors": {
     "title": "cyan",
     "gen": "white",
     "success": "green",

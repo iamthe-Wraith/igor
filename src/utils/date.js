@@ -1,3 +1,16 @@
+/**
+ * generates date in format: YYYY-MM-DD
+ *
+ * @return {string} - the formatted date
+ */
+export const getFormattedDate = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1) < 10 ? `0${now.getMonth() + 1}` : (now.getMonth() + 1);
+  const date = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
+  return `${year}-${month}-${date}`;
+};
+
 export const getMonth = (month, abbreviated = false) => {
   switch (month) {
     case 0: return abbreviated ? 'Jan' : 'January';

@@ -173,7 +173,7 @@ export default class Command {
         Logger.gen('flags:');
 
         for (const i in this.parser.flags) {
-          Logger.title(`\t--${i}${'shortHand' in this.parser.flags[i] && this.parser.flag[i].shortHand ? `|-${this.parser.flags[i].shortHand}` : ''}`);
+          Logger.title(`\t--${i}${'shortHand' in this.parser.flags[i] && this.parser.flags[i].shortHand ? `|-${this.parser.flags[i].shortHand}` : ''}`);
           Logger.gen(`\t${'description' in this.parser.flags[i] ? this.parser.flags[i].description : ''}\n`);
         }
       }

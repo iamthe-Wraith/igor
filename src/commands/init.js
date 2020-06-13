@@ -9,6 +9,8 @@ import FatalError from '../../lib/error/fatal-error';
 import * as Variation from '../utils/variation';
 import * as Team from '../utils/team';
 import { Logger } from '../../lib/logger';
+import { getFormattedDate } from '../utils/date';
+import { parseTemplateVariables } from '../utils/template-variables';
 
 import NonClientTeams from '../../config/non-client-teams';
 
@@ -22,19 +24,6 @@ const exclusions = new Set([
   '.DS_Store',
   '.git'
 ]);
-
-/**
- * generates date in format: YYYY-MM-DD
- *
- * @return {string} - the formatted date
- */
-const getFormattedDate = () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = (now.getMonth() + 1) < 10 ? `0${now.getMonth() + 1}` : (now.getMonth() + 1);
-  const date = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
-  return `${year}-${month}-${date}`;
-};
 
 /**
  * creates the .testconfig file and stores
@@ -406,7 +395,8 @@ const getTemplateFiles = ctx => {
 
       try {
         let configContents = fs.readFileSync(newConfig, 'utf8');
-        configContents = configContents.replace('replacetestname', ctx.repo.name);
+        configContents = parseTemplateVariables(configContents, ctx);
+
         fs.writeFileSync(newConfig, configContents);
       } catch (err) {
         throw new Error(`init:getTemplateFiles error\n\nFailed to update testName within BB.${ctx.testData.client.name}.test.config.js\n${err.message}`);
@@ -415,11 +405,7 @@ const getTemplateFiles = ctx => {
       // replace placeholders inside webpack files
       try {
         const webpackConfigPath = path.resolve(process.cwd(), 'webpack.config.js');
-        let webpackConfig = fs.readFileSync(webpackConfigPath, 'utf8');
-
-        while (webpackConfig.indexOf('replaceclientname') > -1) {
-          webpackConfig = webpackConfig.replace('replaceclientname', ctx.testData.client.name);
-        }
+        const webpackConfig = parseTemplateVariables(fs.readFileSync(webpackConfigPath, 'utf8'), ctx);
 
         fs.writeFileSync(webpackConfigPath, webpackConfig);
       } catch (err) {
@@ -428,11 +414,7 @@ const getTemplateFiles = ctx => {
 
       try {
         const webpackDevPath = path.resolve(process.cwd(), 'webpack.dev.js');
-        let webpackDev = fs.readFileSync(webpackDevPath, 'utf8');
-
-        while (webpackDev.indexOf('replaceclientname') > -1) {
-          webpackDev = webpackDev.replace('replaceclientname', ctx.testData.client.name);
-        }
+        const webpackDev = parseTemplateVariables(fs.readFileSync(webpackDevPath, 'utf8'), ctx);
 
         fs.writeFileSync(webpackDevPath, webpackDev);
       } catch (err) {
@@ -480,19 +462,12 @@ const updatePackageJson = async (ctx) => {
   let bbWrapperPluginLatestRelease = null;
 
   try {
-    packageJson = fs.readFileSync(packageJsonPath, 'utf8');
+    packageJson = parseTemplateVariables(fs.readFileSync(packageJsonPath, 'utf8'), ctx);
     packageJson = JSON.parse(packageJson);
   } catch (err) {
     throw new FatalError(`init:updatePackageJson error\n\nFailed to read package.json\n${err.message}`);
   }
 
-  packageJson.name = `bb_${ctx.testData.client.name}_test`;
-  packageJson.description = `a test for ${ctx.testData.client.name}`;
-  packageJson.BBConfig = {
-    testName: ctx.repo.name,
-    dateCreate: getFormattedDate(),
-    client: ctx.testData.client.name
-  };
   packageJson.repository = {
     type: 'git',
     url: `git+${ctx.repo.clone_url}`
@@ -540,9 +515,8 @@ const updateReadme = ctx => {
   const readmePath = path.resolve(process.cwd(), 'README.md');
   if (fs.existsSync(readmePath)) {
     try {
-      let content = fs.readFileSync(readmePath, 'utf8');
+      const content = parseTemplateVariables(fs.readFileSync(readmePath, 'utf8'), ctx);
 
-      content = content.split('replacetestname').join(getTestName(ctx));
       fs.writeFileSync(readmePath, content);
       return ctx;
     } catch (err) {
