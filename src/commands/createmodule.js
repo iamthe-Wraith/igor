@@ -197,6 +197,9 @@ createModuleCommand
   .argument('entryMethodName|e', {
     type: 'string',
     description: 'the name to give the main entry method (the initial method that will be exported) for the module. if not provided, method name will default  to "init"'
+  })
+  .flag('stateful|s', {
+    description: 'if provided AND any of the stateful template variables have been added to the template, will make the module stateful. if not provided, will simply remove any stateful template variables found in the template.'
   });
 
 /**
