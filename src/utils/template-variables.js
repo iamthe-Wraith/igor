@@ -48,7 +48,7 @@ export const parseTemplateVariables = (contents, ctx) => {
   let _contents = contents;
 
   TEMPLATE_VARIABLES.forEach(tv => {
-    _contents = _contents.split(`{{tv[0]}}`).join(tv[1]);
+    _contents = _contents.split(`{{${tv[0]}}}`).join(`${tv[1]}`);
   });
 
   return _contents;
