@@ -33,9 +33,9 @@ export const parseTemplateVariables = (contents, ctx) => {
 
     ['statefulImport', ctx?.arguments?.flags?.stateful ? 'import State from \'bbmodules/State\';' : ''],
 
-    ['statefulInit', ctx?.arguments?.flags?.stateful ? 'export const initState = (newState, lastState) => {};' : ''],
+    ['statefulInit', ctx?.arguments?.flags?.stateful ? '\nexport const initState = (newState, lastState) => {};\n' : ''],
 
-    ['statefulInitCall', ctx?.arguments?.flags?.stateful ? 'initState();' : ''],
+    ['statefulInitCall', ctx?.arguments?.flags?.stateful ? 'initState();\n' : ''],
 
     // will replace 'replacetestname' (have seen in README.md, package.json and BB.client.test.config.js)
     // update occurs in init command
@@ -48,7 +48,15 @@ export const parseTemplateVariables = (contents, ctx) => {
   let _contents = contents;
 
   TEMPLATE_VARIABLES.forEach(tv => {
-    _contents = _contents.split(`{{${tv[0]}}}`).join(`${tv[1]}`);
+    if (
+      (tv[0] === 'statefulImport' && tv[1] === '') ||
+      (tv[0] === 'statefulInit' && tv[1] === '') ||
+      (tv[0] === 'statefulInitCall' && tv[1] === '')
+    ) {
+      _contents = _contents.split(`{{${tv[0]}}}\n`).join(`${tv[1]}`);
+    } else {
+      _contents = _contents.split(`{{${tv[0]}}}`).join(`${tv[1]}`);
+    }
   });
 
   return _contents;
