@@ -396,6 +396,7 @@ const getTemplateFiles = ctx => {
       try {
         let configContents = fs.readFileSync(newConfig, 'utf8');
         configContents = parseTemplateVariables(configContents, ctx);
+
         fs.writeFileSync(newConfig, configContents);
       } catch (err) {
         throw new Error(`init:getTemplateFiles error\n\nFailed to update testName within BB.${ctx.testData.client.name}.test.config.js\n${err.message}`);
@@ -404,7 +405,7 @@ const getTemplateFiles = ctx => {
       // replace placeholders inside webpack files
       try {
         const webpackConfigPath = path.resolve(process.cwd(), 'webpack.config.js');
-        const webpackConfig = parseTemplateVariables(fs.readFileSync(webpackConfigPath, 'utf8'));
+        const webpackConfig = parseTemplateVariables(fs.readFileSync(webpackConfigPath, 'utf8'), ctx);
 
         fs.writeFileSync(webpackConfigPath, webpackConfig);
       } catch (err) {
@@ -413,7 +414,7 @@ const getTemplateFiles = ctx => {
 
       try {
         const webpackDevPath = path.resolve(process.cwd(), 'webpack.dev.js');
-        const webpackDev = parseTemplateVariables(fs.readFileSync(webpackDevPath, 'utf8'));
+        const webpackDev = parseTemplateVariables(fs.readFileSync(webpackDevPath, 'utf8'), ctx);
 
         fs.writeFileSync(webpackDevPath, webpackDev);
       } catch (err) {
@@ -461,7 +462,7 @@ const updatePackageJson = async (ctx) => {
   let bbWrapperPluginLatestRelease = null;
 
   try {
-    packageJson = parseTemplateVariables(fs.readFileSync(packageJsonPath, 'utf8'));
+    packageJson = parseTemplateVariables(fs.readFileSync(packageJsonPath, 'utf8'), ctx);
     packageJson = JSON.parse(packageJson);
   } catch (err) {
     throw new FatalError(`init:updatePackageJson error\n\nFailed to read package.json\n${err.message}`);
@@ -514,7 +515,7 @@ const updateReadme = ctx => {
   const readmePath = path.resolve(process.cwd(), 'README.md');
   if (fs.existsSync(readmePath)) {
     try {
-      const content = parseTemplateVariables(fs.readFileSync(readmePath, 'utf8'));
+      const content = parseTemplateVariables(fs.readFileSync(readmePath, 'utf8'), ctx);
 
       fs.writeFileSync(readmePath, content);
       return ctx;
