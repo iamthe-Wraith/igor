@@ -6,6 +6,7 @@ Like the assistant to the famous mad scientist, Dr. Frankenstein, Igor helps to 
 [installation](#installation)  
 [getting your access token](#gettingyouraccesstoken)  
 [commands](#commands)  
+[template variables](#templatevariables)  
 [customization](#customization)  
 [version notes](#versionnotes)  
 [future features](#futurefeatures)  
@@ -48,6 +49,22 @@ If you would like to see further documentation for a specific command, you can u
 `igor help -c [name of command]`  
 `igor help --command [name of command]`  
 
+<h3 id="template-variables">TEMPLATE VARIABLES</h3>
+a list of template variables that are available for use.
+
+<h4>Variables Available for Client Templates</h4>
+- `{{clientName}}` - the name of the client the test is being created for.
+- `{{dateCreated}}` - the date the test is being created (format: YYYY-MM-DD)
+- `{{testName}}` - the name of the test being created
+- `{{username}}` - the username of the user creating the test
+
+<h4>Variables Available for Module Templates</h4>
+- `{{moduleEntryMethodName}}` - the name of the main entry method for the module
+- `{{moduleName}}` - the name of the new module being created
+- `{{statefulImport}}` - the import statement for `bbmodules/State`. (when added to a template, will only add the import statement if the stateful flag is included with the command)
+- `{{statefulInit}}` - the `initState` function. (when added to a template, will only add the `initState` function if the stateful flag is included with the command)
+= `{{statefulInitCall}}` - the call to the `initState` function. (when added to a template, will only add the `initState` function call if the stateful flag is included with the command)
+
 <h3 id="customization">CUSTOMIZATION</h3>
 
 You can customize the colors used for all the messages that the Igor prints to the console.
@@ -55,7 +72,7 @@ You can customize the colors used for all the messages that the Igor prints to t
 to customize, all that is needed is to update the 'colors' property within the .igorrc file, located in your home directory.
 
 ```json
-  "colors": {
+   "colors": {
     "title": "cyan",
     "gen": "white",
     "success": "green",
