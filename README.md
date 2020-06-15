@@ -50,12 +50,13 @@ If you would like to see further documentation for a specific command, you can u
 ### TEMPLATE VARIABLES
 a list of template variables that are available for use.
 
-#### Variables Available for Client Templates
+#### Variables Available for `[client]\_templates` Files
 
 - `{{clientName}}` - the name of the client the test is being created for.  
 - `{{dateCreated}}` - the date the test is being created (format: YYYY-MM-DD)  
 - `{{testName}}` - the name of the test being created  
 - `{{username}}` - the username of the user creating the test  
+- `{{variantName}}` - the name of the variant being creating (*for use in variant .js/.scss files only*)
 
 #### Variables Available for Module Templates
 

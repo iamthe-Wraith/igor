@@ -17,32 +17,16 @@ import { getFormattedDate } from './date';
 export const parseTemplateVariables = (contents, ctx) => {
   /** all registered template variables */
   const TEMPLATE_VARIABLES = [
-    // will replace 'replaceclientname' (have seen in webpack config files)
-    // update occurs in init command
     ['clientName', ctx?.testData?.client?.name || ''],
-
-    // will replace 'replacedatecreated' (have seen in package.json)
-    // init command overrides this with a new custom object...need to update.
     ['dateCreated', getFormattedDate()],
-
-    // update occurs in createmoudle command
     ['moduleEntryMethodName', ctx?.arguments?.arguments?.entryMethodName || 'init'],
-
-    // update occurs in createmoudle command
     ['moduleName', ctx?.arguments?.parameters?.name || ''],
-
     ['statefulImport', ctx?.arguments?.flags?.stateful ? 'import State from \'bbmodules/State\';' : ''],
-
     ['statefulInit', ctx?.arguments?.flags?.stateful ? '\nexport const initState = (newState, lastState) => {};\n' : ''],
-
     ['statefulInitCall', ctx?.arguments?.flags?.stateful ? 'initState();\n' : ''],
-
-    // will replace 'replacetestname' (have seen in README.md, package.json and BB.client.test.config.js)
-    // update occurs in init command
     ['testName', ctx?.repo?.name || ''],
-
-    // update package.json to use this instead of defaulting to john
     ['username', ctx?.config?.github?.username || ''],
+    ['variantName', ctx?.variantName || ''],
   ];
 
   let _contents = contents;

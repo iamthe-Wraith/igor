@@ -351,7 +351,7 @@ const getClientTemplateFiles = ctx => {
 
     _exec(`git clone ${clientTemplates}`, { maxBuffer }, err => {
       if (err) {
-        reject(new FatalError(`init:getTemplateFiles error\n\nFailed to clone repo: ${ctx.testData.client.name}_templates\n${err.message}`));
+        reject(new FatalError(`init:getClientTemplateFiles error\n\nFailed to clone repo: ${ctx.testData.client.name}_templates\n${err.message}`));
       }
 
       const src = path.resolve(process.cwd(), `${ctx.testData.client.name}_templates`);
@@ -393,6 +393,7 @@ const getTemplateFiles = ctx => {
         throw new Error(`init:getTemplateFiles error\n\nFailed to rename BB.client.test.config.js\n${err.message}`);
       }
 
+      // replace template variables inside config
       try {
         let configContents = fs.readFileSync(newConfig, 'utf8');
         configContents = parseTemplateVariables(configContents, ctx);
@@ -402,7 +403,7 @@ const getTemplateFiles = ctx => {
         throw new Error(`init:getTemplateFiles error\n\nFailed to update testName within BB.${ctx.testData.client.name}.test.config.js\n${err.message}`);
       }
 
-      // replace placeholders inside webpack files
+      // replace template variables inside webpack files
       try {
         const webpackConfigPath = path.resolve(process.cwd(), 'webpack.config.js');
         const webpackConfig = parseTemplateVariables(fs.readFileSync(webpackConfigPath, 'utf8'), ctx);
@@ -539,7 +540,7 @@ const updateReadme = ctx => {
  */
 const buildAllVariations = ctx => {
   try {
-    Variation.build('control', ctx.template);
+    Variation.build('control', ctx);
 
     if (ctx.testData.variations < maxVariations) {
       for (let i = 0; i < ctx.testData.variations; i++) {
@@ -556,7 +557,7 @@ const buildAllVariations = ctx => {
           suffix = `${suffix}${String.fromCharCode(charCode)}`;
         }
 
-        Variation.build(`variant${suffix}`, ctx.template);
+        Variation.build(`variant${suffix}`, ctx);
       }
 
       return ctx;

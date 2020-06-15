@@ -1,18 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-/**
- * add sets of key/value pairs here that will
- * be updated in variant templates.
- *
- * the key will be the template variable (or
- * the value in the template contents that will
- * be replaced)
- *
- * the value will be what the key will be replaced
- * with.
- */
-const templateVariables = {};
+import { parseTemplateVariables } from '../utils/template-variables';
 
 /**
  * object that houses the template contents
@@ -41,10 +30,12 @@ const templateVariables = {};
  * template to be used to build the variation
  * files.
  */
-export const build = (name, template) => {
+export const build = (name, ctx) => {
+  const { template } = ctx;
+
   if (name && template) {
     const templateFiles = getTemplateFiles(template);
-    const templateContents = getTemplatesContents(templateFiles, { '{{replacevariantname}}': name });
+    const templateContents = getTemplatesContents(templateFiles, { ...ctx, variantName: name });
     buildVariation(name, templateContents);
   } else if (!name) {
     throw new Error(`utils:variation:build error\n\nno variation name found`);
@@ -146,7 +137,7 @@ export const getAvailableTemplates = () => {
  * template variables have been replaced
  * successfully
  */
-export const getTemplatesContents = (files, variables = {}) => {
+export const getTemplatesContents = (files, ctx) => {
   const {
     js = null,
     scss = null
@@ -170,8 +161,10 @@ export const getTemplatesContents = (files, variables = {}) => {
   }
 
   if (jscontents !== null && scsscontents !== null && errorMessage === null) {
-    jscontents = replaceTemplateVariables(jscontents, variables);
-    scsscontents = replaceTemplateVariables(scsscontents, variables);
+    // jscontents = replaceTemplateVariables(jscontents, variables);
+    jscontents = parseTemplateVariables(jscontents, ctx);
+    // scsscontents = replaceTemplateVariables(scsscontents, variables);
+    scsscontents = parseTemplateVariables(scsscontents, ctx);
 
     return {
       js: jscontents,
