@@ -505,6 +505,7 @@ const updatePackageJson = async (ctx) => {
   let clientmodulesLatestRelease = null;
   let bbInsertCssPluginLatestRelease = null;
   let bbWrapperPluginLatestRelease = null;
+  let bbHotTestReloadingLatestRelease = null;
 
   try {
     packageJson = parseTemplateVariables(fs.readFileSync(packageJsonPath, 'utf8'), ctx);
@@ -523,6 +524,7 @@ const updatePackageJson = async (ctx) => {
     clientmodulesLatestRelease = await github.getLatestRelease({ repoName: `${ctx.testData.client.name}_modules` });
     bbInsertCssPluginLatestRelease = await github.getLatestRelease({ repoName: 'bb-insert-css-plugin' });
     bbWrapperPluginLatestRelease = await github.getLatestRelease({ repoName: 'bb-wrapper-plugin' });
+    bbHotTestReloadingLatestRelease = await github.getLatestRelease({ repoName: 'hot-test-reloading' });
   } catch (err) {
     throw new FatalError(`init:updatePackageJson error\n\nFailed to get latest releases of internal modules\n${err.message}`);
   }
@@ -535,6 +537,7 @@ const updatePackageJson = async (ctx) => {
   packageJson.devDependencies[`${ctx.testData.client.name}_modules`] = `${org}/${ctx.testData.client.name}_modules#${modulesTagName}`;
   packageJson.devDependencies['bb-insert-css-plugin'] = `${org}/bb-insert-css-plugin#${bbInsertCssPluginLatestRelease.tag_name}`;
   packageJson.devDependencies['bb-wrapper-plugin'] = `${org}/bb-wrapper-plugin#${bbWrapperPluginLatestRelease.tag_name}`;
+  packageJson.devDependencies['hot-test-reloading'] = `${org}/hot-test-reloading#${bbHotTestReloadingLatestRelease.tag_name}`;
 
   try {
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
