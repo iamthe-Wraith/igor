@@ -40,6 +40,7 @@ export const parseTemplateVariables = (contents, ctx) => {
     ) {
       _contents = _contents.split(`{{${tv[0]}}}\n`).join(`${tv[1]}`);
     } else {
+      if (tv[0] === 'numVariations') console.log('>>> in parser', tv[1]);
       _contents = _contents.split(`{{${tv[0]}}}`).join(`${tv[1]}`);
     }
   });

@@ -467,7 +467,12 @@ const getTemplateFiles = ctx => {
       }
 
       try {
+        Logger.debug('>>> num variations', ctx.testData.variations);
+
         const htrConfigPath = path.resolve(process.cwd(), 'hot-test-reloading.config.json');
+
+        Logger.debug('>>> config path', htrConfigPath);
+
         const htrContents = parseTemplateVariables(fs.readFileSync(htrConfigPath), ctx);
 
         fs.writeFileSync(htrConfigPath, htrContents);
