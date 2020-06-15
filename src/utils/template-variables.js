@@ -21,6 +21,7 @@ export const parseTemplateVariables = (contents, ctx) => {
     ['dateCreated', getFormattedDate()],
     ['moduleEntryMethodName', ctx?.arguments?.arguments?.entryMethodName || 'init'],
     ['moduleName', ctx?.arguments?.parameters?.name || ''],
+    ['numVariations', ctx?.testData?.variations || ''],
     ['statefulImport', ctx?.arguments?.flags?.stateful ? 'import State from \'bbmodules/State\';' : ''],
     ['statefulInit', ctx?.arguments?.flags?.stateful ? '\nexport const initState = (newState, lastState) => {};\n' : ''],
     ['statefulInitCall', ctx?.arguments?.flags?.stateful ? 'initState();\n' : ''],

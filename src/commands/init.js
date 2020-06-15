@@ -466,6 +466,15 @@ const getTemplateFiles = ctx => {
         throw new Error(`init:getTemplateFiles error\n\nFailed to update webpack.dev.js with client name\n${err.message}`);
       }
 
+      try {
+        const htrConfigPath = path.resolve(process.cwd(), 'hot-test-reloading.config.json');
+        const htrContents = parseTemplateVariables(fs.readFileSync(htrConfigPath), ctx);
+
+        fs.writeFileSync(htrConfigPath, htrContents);
+      } catch (err) {
+        throw new Error(`init:getTemplateFiles error\n\nFailed to update hot-test-reloading.config.json\n${err.message}`);
+      }
+
       // add .gitignore if doesnt exist
       try {
         fs.statSync(path.resolve(process.cwd(), '.gitignore'));
