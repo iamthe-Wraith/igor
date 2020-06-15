@@ -1,10 +1,11 @@
 ### v1.0.0
 - rebranded from `Build Tool` to `Igor`
-- removed user only teams retrieval. now all calls to get teams will retrieve all teams associated with org
 - added new addnonclientteams command to handle adding teams like the ReadOnly and Analytics teams that are dedicated to a single client
 - added global template support
 - added project creation on init
 - added sharable module templates support
+- added hot test reloading
+- removed user only teams retrieval. now all calls to get teams will retrieve all teams associated with org
 - removed anti-pattern project wide
 - github api endpoint deprecation updates
 - github api error messages updated

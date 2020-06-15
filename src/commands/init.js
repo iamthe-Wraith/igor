@@ -332,36 +332,36 @@ const createProject = (repo, name, cols) => {
  * that contains objects for each of the projects created.
  */
 const createProjects = ctx => {
-  return Promise.all([
-    createProject(
-      ctx.repo.name,
-      'tasks',
-      [
-        'queue',
-        'waiting on something',
-        'in progress',
-        'in qa',
-        'with client',
-        'complete'
-      ]
-    ),
-    createProject(
-      ctx.repo.name,
-      'qa',
-      [
-        'queue',
-        'in dev',
-        'being confirmed',
-        'complete'
-      ]
-    )
-  ])
-    .then(projects => {
-      ctx.repo.projects = {
-        tasks: projects[0],
-        qa: projects[1]
-      };
-      
+  ctx.repo.projects = {};
+
+  return createProject(
+    ctx.repo.name,
+    'tasks',
+    [
+      'queue',
+      'waiting on something',
+      'in progress',
+      'in qa',
+      'with client',
+      'complete'
+    ]
+  )
+    .then(project => {
+      ctx.repo.projects.tasks = project;
+
+      return createProject(
+        ctx.repo.name,
+        'qa',
+        [
+          'queue',
+          'in dev',
+          'being confirmed',
+          'complete'
+        ]
+      );
+    })
+    .then(project => {
+      ctx.repo.projects.qa = project;
       return ctx;
     });
 };
@@ -466,6 +466,16 @@ const getTemplateFiles = ctx => {
         throw new Error(`init:getTemplateFiles error\n\nFailed to update webpack.dev.js with client name\n${err.message}`);
       }
 
+      try {
+        const htrConfigPath = path.resolve(process.cwd(), 'hot-test-reloading.config.json');
+        let htrContents = fs.readFileSync(htrConfigPath, 'utf8');
+        htrContents = parseTemplateVariables(htrContents, ctx);
+
+        fs.writeFileSync(htrConfigPath, htrContents);
+      } catch (err) {
+        throw new Error(`init:getTemplateFiles error\n\nFailed to update hot-test-reloading.config.json\n${err.message}`);
+      }
+
       // add .gitignore if doesnt exist
       try {
         fs.statSync(path.resolve(process.cwd(), '.gitignore'));
@@ -505,6 +515,7 @@ const updatePackageJson = async (ctx) => {
   let clientmodulesLatestRelease = null;
   let bbInsertCssPluginLatestRelease = null;
   let bbWrapperPluginLatestRelease = null;
+  let bbHotTestReloadingLatestRelease = null;
 
   try {
     packageJson = parseTemplateVariables(fs.readFileSync(packageJsonPath, 'utf8'), ctx);
@@ -523,6 +534,7 @@ const updatePackageJson = async (ctx) => {
     clientmodulesLatestRelease = await github.getLatestRelease({ repoName: `${ctx.testData.client.name}_modules` });
     bbInsertCssPluginLatestRelease = await github.getLatestRelease({ repoName: 'bb-insert-css-plugin' });
     bbWrapperPluginLatestRelease = await github.getLatestRelease({ repoName: 'bb-wrapper-plugin' });
+    bbHotTestReloadingLatestRelease = await github.getLatestRelease({ repoName: 'hot-test-reloading' });
   } catch (err) {
     throw new FatalError(`init:updatePackageJson error\n\nFailed to get latest releases of internal modules\n${err.message}`);
   }
@@ -535,6 +547,7 @@ const updatePackageJson = async (ctx) => {
   packageJson.devDependencies[`${ctx.testData.client.name}_modules`] = `${org}/${ctx.testData.client.name}_modules#${modulesTagName}`;
   packageJson.devDependencies['bb-insert-css-plugin'] = `${org}/bb-insert-css-plugin#${bbInsertCssPluginLatestRelease.tag_name}`;
   packageJson.devDependencies['bb-wrapper-plugin'] = `${org}/bb-wrapper-plugin#${bbWrapperPluginLatestRelease.tag_name}`;
+  packageJson.devDependencies['hot-test-reloading'] = `${org}/hot-test-reloading#${bbHotTestReloadingLatestRelease.tag_name}`;
 
   try {
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
