@@ -332,36 +332,36 @@ const createProject = (repo, name, cols) => {
  * that contains objects for each of the projects created.
  */
 const createProjects = ctx => {
-  return Promise.all([
-    createProject(
-      ctx.repo.name,
-      'tasks',
-      [
-        'queue',
-        'waiting on something',
-        'in progress',
-        'in qa',
-        'with client',
-        'complete'
-      ]
-    ),
-    createProject(
-      ctx.repo.name,
-      'qa',
-      [
-        'queue',
-        'in dev',
-        'being confirmed',
-        'complete'
-      ]
-    )
-  ])
-    .then(projects => {
-      ctx.repo.projects = {
-        tasks: projects[0],
-        qa: projects[1]
-      };
-      
+  ctx.repo.projects = {};
+
+  return createProject(
+    ctx.repo.name,
+    'tasks',
+    [
+      'queue',
+      'waiting on something',
+      'in progress',
+      'in qa',
+      'with client',
+      'complete'
+    ]
+  )
+    .then(project => {
+      ctx.repo.projects.tasks = project;
+
+      return createProject(
+        ctx.repo.name,
+        'qa',
+        [
+          'queue',
+          'in dev',
+          'being confirmed',
+          'complete'
+        ]
+      );
+    })
+    .then(project => {
+      ctx.repo.projects.qa = project;
       return ctx;
     });
 };
@@ -467,13 +467,9 @@ const getTemplateFiles = ctx => {
       }
 
       try {
-        Logger.debug('>>> num variations', ctx.testData.variations);
-
         const htrConfigPath = path.resolve(process.cwd(), 'hot-test-reloading.config.json');
-
-        Logger.debug('>>> config path', htrConfigPath);
-
-        const htrContents = parseTemplateVariables(fs.readFileSync(htrConfigPath), ctx);
+        let htrContents = fs.readFileSync(htrConfigPath, 'utf8');
+        htrContents = parseTemplateVariables(htrContents, ctx);
 
         fs.writeFileSync(htrConfigPath, htrContents);
       } catch (err) {
