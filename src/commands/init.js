@@ -299,25 +299,69 @@ const createLabels = ctx => {
 /**
  * uses the github library to create a new project for this test.
  *
- * @param {Object} ctx - the context
- * @return {Promise<Object>} - resolves with the updated context.
- * update adds project data to context.
+ * @param {string} repo - the name of the repo to create the
+ * project in
+ *
+ * @param {string} name - the name of the project
+ *
+ * @param {string[]} - the names of all the columns to be
+ * added to the project (cols will be created in order received
+ * in array)
+ *
+ * @return {Promise<Object>} - resolves with the project object
+ * returned from the GH API.
  */
-const createProject = ctx => {
+const createProject = (repo, name, cols) => {
   return github.createProject({
-    repo: ctx.repo.name,
-    name: 'tasks',
-    cols: [
-      'queue',
-      'waiting on something',
-      'in progress',
-      'in qa',
-      'with client',
-      'complete'
-    ]
+    repo: repo,
+    name: name,
+    cols
   })
     .then(project => {
-      ctx.repo.project = project;
+      return project;
+    });
+};
+
+/**
+ * creates all the projects for the test
+ *
+ * @param {Object} - the context
+ *
+ * @returns {Object} - resolves with the updated context.
+ * updated includes new 'projects' property in ctx.repo
+ * that contains objects for each of the projects created.
+ */
+const createProjects = ctx => {
+  return Promise.all([
+    createProject(
+      ctx.repo.name,
+      'tasks',
+      [
+        'queue',
+        'waiting on something',
+        'in progress',
+        'in qa',
+        'with client',
+        'complete'
+      ]
+    ),
+    createProject(
+      ctx.repo.name,
+      'qa',
+      [
+        'queue',
+        'in dev',
+        'being confirmed',
+        'complete'
+      ]
+    )
+  ])
+    .then(projects => {
+      ctx.repo.projects = {
+        tasks: projects[0],
+        qa: projects[1]
+      };
+      
       return ctx;
     });
 };
@@ -1101,9 +1145,9 @@ initCommand.main = ctx => {
         Logger.success('[+] repo labels created');
         return ctx;
       })
-      .then(createProject)
+      .then(createProjects)
       .then(ctx => {
-        Logger.success('[+] project created');
+        Logger.success('[+] projects created');
         return ctx;
       })
       .then(updatePackageJson)
