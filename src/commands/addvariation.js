@@ -80,11 +80,13 @@ addvariationCommand.before = ctx => {
       if (fs.existsSync(path.resolve(process.cwd(), '.testconfig'))) {
         try {
           ctx.template = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), '.testconfig'), 'utf8')).template;
+          resolve(ctx);
         } catch (err) {
           reject(new FatalError(`addvariation:before error\n\n${err.message}`));
         }
       } else {
         ctx.template = 'default';
+        resolve(ctx);
       }
     } else {
       Logger.warn('[!] invalid directory found. this command will only work on test directories. addvariation cancelled');
@@ -140,7 +142,7 @@ addvariationCommand.main = ctx => {
               index++;
             } catch (err) {
               try {
-                Variation.build(variantName, ctx.template);
+                Variation.build(variantName, ctx);
                 made++;
                 index++;
               } catch (err) {

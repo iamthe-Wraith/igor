@@ -161,9 +161,7 @@ export const getTemplatesContents = (files, ctx) => {
   }
 
   if (jscontents !== null && scsscontents !== null && errorMessage === null) {
-    // jscontents = replaceTemplateVariables(jscontents, variables);
     jscontents = parseTemplateVariables(jscontents, ctx);
-    // scsscontents = replaceTemplateVariables(scsscontents, variables);
     scsscontents = parseTemplateVariables(scsscontents, ctx);
 
     return {
@@ -232,45 +230,5 @@ export const getTemplateFiles = template => {
     }
   } else {
     throw new Error(`utils:variation:getTemplateFiles error\n\n${templatePath} not found`);
-  }
-};
-
-/**
- * looks over a provided string, and replaces any
- * template variables found with other contents.
- * template variables to be searched for are the
- * keys found in templateVariables (see object at
- * top of this file) and/or keys found in variables
- * param. these template variables are replaced
- * with the corresponding value of the key.
- *
- * @param {string} contents - the string to be
- * updated
- *
- * @param {Object} [variables] - additional key/value
- * pairs not already included in the templateVariables
- * object found at the top of this file. these are
- * usually passed in because they are dynamic.
- *
- * @return {string} - the updated content.
- */
-export const replaceTemplateVariables = (content, variables = {}) => {
-  let _content = typeof content === 'string' ? content : null;
-  const _variables = { ...templateVariables, ...variables };
-
-  if (_content === null) {
-    throw new Error(`utils:variation:replaceTemplateVariables error\n\nno content received`);
-  } else {
-    const keys = Object.keys(_variables);
-
-    if (keys.length) {
-      keys.forEach(key => {
-        while (_content.indexOf(key) > -1) {
-          _content = _content.replace(key, _variables[key]);
-        }
-      });
-    }
-
-    return _content;
   }
 };
