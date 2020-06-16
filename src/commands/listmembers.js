@@ -67,7 +67,7 @@ const getMembers = ctx => {
           ctx.members = members;
           return ctx;
         } else {
-          Logger.warn(`\nno members are assigned to ${team}\n`);
+          Logger.warn(`\nno members are assigned to ${team.name}\n`);
           process.exit(0);
         }
       })
