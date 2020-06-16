@@ -47,6 +47,8 @@ const configPath = path.join(os.homedir(), '.igorrc');
     config.github[attr] = value;
   }
 
+  if (!config.github.org) config.github.org = 'BrooksBellInc';
+
   if (!config.colors) {
     config.colors = {
       title: 'cyan',
