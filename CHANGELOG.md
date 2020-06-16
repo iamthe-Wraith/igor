@@ -4,6 +4,7 @@
 - added global template support
 - added project creation on init
 - added sharable module templates support
+- added support for dedicated client process differences
 - added hot test reloading
 - removed user only teams retrieval. now all calls to get teams will retrieve all teams associated with org
 - removed anti-pattern project wide
