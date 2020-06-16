@@ -44,8 +44,10 @@ const printGenDocs = () => {
   Logger.title('  npm start');
   Logger.gen('    - bundles and minifies test files inside the variation\'s /build/ directory. generally it is these files that will be added to testing tools\n');
 
-  Logger.title('  npm run dev [--htr]');
-  Logger.gen('    - bundles and minifies test files inside the test\'s /dev/ directory. also adds code to add css to page, so the .js file can be executed in the browser console and all styles are applied to custom changes\nif flag --htr is included, will fire up the hot test reloader');
+  Logger.title('  npm run dev [--htr] [--control, --a, etc...]');
+  Logger.gen('    - bundles and minifies test files inside the test\'s /dev/ directory. also adds code to add css to page, so the .js file can be executed in the browser console and all styles are applied to custom changes.\n');
+  Logger.gen('        - if flag --htr is included, will fire up the hot test reloader\n');
+  Logger.gen('        - by default, htr will open a window for every variation. however, you can include additional flags specifying only what variations you want to have windows opened for. these optional flags follow the format "--{variant}"...so if you only wanted to open variant A, you would use the flag "--a" or "--A"\n');
 
   Logger.title('  npm run verbose-prod');
   Logger.gen('    - is the same as npm start, but DOES NOT minify the code\n');
