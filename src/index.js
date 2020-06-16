@@ -12,8 +12,6 @@ Logger.init(ctx);
 if (ctx.command === null ||
   (ctx.command !== '--version' && ctx.command !== '-v' && !commands.has(ctx.command))
 ) {
-  Logger.debug(ctx);
-
   Logger.error('\n[-] invalid command\n');
   process.exit(1);
 }
