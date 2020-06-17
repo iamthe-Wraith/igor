@@ -1,7 +1,7 @@
 ### v1.0.0
 - rebranded from `Build Tool` to `Igor`
 - added new addnonclientteams command to handle adding teams like the ReadOnly and Analytics teams that are dedicated to a single client
-- added global template support
+- added global config template support
 - added project creation on init
 - added sharable module templates support
 - added support for dedicated client process differences
