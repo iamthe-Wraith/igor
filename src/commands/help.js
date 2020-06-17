@@ -17,10 +17,10 @@ const printGenDocs = () => {
   let version = null;
 
   try {
-    const packageJson = JSON.parse(fs.readFileSync(path.join('..', '..', 'package.json'), 'utf8'));
+    const packageJson = JSON.parse(fs.readFileSync(path.join(process.mainModule.filename, '..', '..', 'package.json'), 'utf8'));
     version = `v${packageJson.version}`;
   } catch (err) {
-    Logger.error(`\nhelp:printGenDocs error\b\bunable to retrieve igor version\n${err.message}\n`);
+    Logger.error(`\nhelp:printGenDocs error\n\nunable to retrieve igor version\n${err.message}\n`);
   }
 
   Logger.gen('\n*******************************************\n');
