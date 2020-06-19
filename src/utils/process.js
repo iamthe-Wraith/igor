@@ -117,9 +117,9 @@ const testIfUserHasLatestVersion = ctx => {
       let localVersion = null;
 
       try {
-        localVersion = JSON.parse(fs.readFileSync(path.join('..', '..', 'package.json'), 'utf8')).version.replace('v', '').split('.');
+        localVersion = JSON.parse(fs.readFileSync(path.join(process.mainModule.filename, '..', '..', 'package.json'), 'utf8')).version.replace('v', '').split('.');
       } catch (err) {
-        throw new Error('failed to get latest version of igor');
+        throw new Error(`failed to get latest version of igor - ${err.message}`);
       }
 
       if (localVersion) {
